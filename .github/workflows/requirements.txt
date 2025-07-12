@@ -1,0 +1,5 @@
+<!-- .github/actions/deploy-s3/requirements.txt -->
+requests
+json
+datetime
+bs4
