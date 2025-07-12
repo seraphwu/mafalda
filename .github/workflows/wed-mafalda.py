@@ -1,1 +1,32 @@
+name: Run Python Script on Schedule
+
+on:
+  schedule:
+    # 使用 cron 表達式，這裡是每天 UTC 時間 00:00 執行
+    - cron: '5 0 * * *'
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 檢出程式碼
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 設定 Python 環境
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # 安裝依賴 (如果有 requirements.txt)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # 執行 Python 腳本
+      - name: Run Python script
+        run: python mafalda.py
 
