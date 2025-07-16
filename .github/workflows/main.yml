@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # 每 3 分鐘執行一次
-    - cron: '00 11 * 3'
+    - cron: '50 11 * 3'
 
 jobs:
   run-script:
