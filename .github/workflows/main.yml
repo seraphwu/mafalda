@@ -3,7 +3,7 @@ name: Run Python Script on Schedule
 on:
   workflow_dispatch:
   schedule:
-    # 每 3 分鐘執行一次
+    # 每 3 週三 五點
     - cron: '9 11 * * 3'
 
 jobs:
