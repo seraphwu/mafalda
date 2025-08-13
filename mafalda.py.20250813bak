@@ -39,3 +39,4 @@ for i in Mafalda:
     f.write('\n')
     f.write(Mafalda2)
     f.write('\n----------\n')
+
