@@ -10,8 +10,8 @@ web = requests.get(url)
 web.encoding = 'UTF-8'
 soup = BeautifulSoup(web.text, "html.parser")
 Mafalda = soup.find_all('a',class_='eXHQwr')
-# .bsRQQO 標題 /hxRpTm 20260710
-# .dylaxC 內文 /jEstAa 20260710
+# .bsRQQO 標題
+# .dylaxC 內文
 
 now = datetime.now()
 time_string = now.strftime("%Y-%m-%d") # from https://blog.csdn.net/weixin_35750747/article/details/129568968
@@ -19,8 +19,8 @@ filename = "mafalda-" + time_string + ".txt"
 path = filename
 f = open(path, 'a', encoding='utf-8') # from https://shengyu7697.github.io/python-write-text-file/
 for i in Mafalda:
-    Mafalda1 = i.find('div',class_='hxRpTm').get_text()  #瑪法達標題
-    Mafalda2 = i.find('div',class_='jEstAa').get_text() #瑪法達內文
+    Mafalda1 = i.find('div',class_='bsRQQO').get_text()  #瑪法達標題
+    Mafalda2 = i.find('div',class_='dylaxC').get_text() #瑪法達內文
     Mafaldacontent = Mafalda1+'\n\n'+Mafalda2
     # added 20250521 https://steam.oxxostudio.tw/category/python/example/line-requests.html 開始
     headers = {'Authorization':'Bearer Xig1kV3NBaGuzbhuM7aOQZ62dPR6d/L4belt/ELspv+/14ymMN5FJ7ad6APRSYhkKTMJs30Nb1m1plTHcyCzLLaGzXHDnUDb1nkvXE/IjqpZSRMbbFGr0keZwXPlVRu+ZUu0q1/gZ2XPC8f1bQmJCAdB04t89/1O/w1cDnyilFU=','Content-Type':'application/json'} #LINE_TOKEN
