@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import re  # 匯入正規表達式模組
 from bs4 import BeautifulSoup
 from datetime import datetime
 
@@ -44,6 +45,10 @@ def main():
     filename = f"mafalda-{time_string}.txt"
     valid_count = 0
 
+    # 設定時間格式的特徵過濾器 (例如: 115.07.08 15:58 或是 2026.07.10 12:00)
+    # ^\d{2,4} 代表開頭是 2 到 4 位數字 (民國年或西元年)
+    time_pattern = re.compile(r'^\d{2,4}\.\d{2}\.\d{2}\s\d{2}:\d{2}$')
+
     with open(filename, 'a', encoding='utf-8') as f:
         # 使用 set 記錄處理過的 URL，避免重複推播
         processed_urls = set()
@@ -53,10 +58,13 @@ def main():
             if href in processed_urls:
                 continue
                 
-            # 抽出該 <a> 標籤內的所有純文字區塊並過濾掉空值
-            texts = [t for t in link.stripped_strings if t]
+            # 抽出純文字，同時過濾掉「空值」以及「長得像更新時間的字串」
+            texts = [
+                t for t in link.stripped_strings 
+                if t and not time_pattern.match(t)
+            ]
             
-            # 【功能修正】如果第一個區塊只是單純的分類標籤「瑪法達」，直接將它剔除
+            # 如果第一個區塊只是單純的分類標籤「瑪法達」，直接將它剔除
             if texts and texts[0] == "瑪法達":
                 texts.pop(0)
             
@@ -94,7 +102,7 @@ def main():
     if valid_count == 0:
         print("警告：完全沒有抓到任何文章。鏡週刊可能大幅度改版了。")
     else:
-        print(f"✅ 執行完成！共抓取並成功推播了 {valid_count} 篇文章（已剔除重複的分類標題）。")
+        print(f"✅ 執行完成！共抓取並成功推播了 {valid_count} 篇文章（已剔除時間與分類標題）。")
 
 if __name__ == "__main__":
     main()
