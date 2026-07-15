@@ -3,7 +3,7 @@ name: Run Python Script on Schedule
 on:
   workflow_dispatch:
   schedule:
-    # 每 3 週三 五點
+    # 每週三 17:15 (UTC 9:15) 執行
     - cron: '15 9 * * 3'
 
 jobs:
@@ -11,23 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 檢出程式碼
+      # 1. 檢出程式碼
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 設定 Python 環境
+      # 2. 設定 Python 環境 (建議明確指定版本，例如 3.11)
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.11'
 
-      # 安裝依賴 (如果有 requirements.txt)
+      # 3. 安裝依賴
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f .github/workflows/requirements.txt ]; then pip install -r .github/workflows/requirements.txt; fi
 
-      # 執行 Python 腳本
+      # 4. 執行 Python 腳本 (最重要的修改在這裡👇)
       - name: Run Python script
+        env:
+          LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
         run: python mafalda.py
-
