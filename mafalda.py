@@ -16,7 +16,11 @@ def main():
     url = "https://www.mirrormedia.mg/section/mafalda"
     
     try:
-        web = requests.get(url, timeout=15)
+# 加入 User-Agent 偽裝成一般使用者的 Chrome 瀏覽器
+        request_headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+        }
+        web = requests.get(url, headers=request_headers, timeout=15)
         web.raise_for_status()
     except requests.RequestException as e:
         print(f"網頁請求失敗: {e}")
